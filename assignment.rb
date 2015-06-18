@@ -1,71 +1,76 @@
-account_holders = []
-	user1 = {
+acct_holders = [
+  {
 	name: "Al",
-	acct: "1234123412341234",
+	acct: "1234",
 	pin: "1234",
-	funds: "50"
-	}
-	user2 = {
+	funds: 50
+	},
+  {
 	name: "Bob",
 	acct: "5678567856785678",
 	pin: "5678",
-	funds: "8000"
-	}
-  user3 = {
+	funds: 8000
+	},
+  {
 	name: "Carl",
 	acct: "9090909090909090",
 	pin: "9090",
-	funds: "1200"
+	funds: 1200
 	}
-	
-	account_holders.push(user1, user2, user3)
-
-####### I don't know what I'm doing
-
-#	puts "Enter your account number:"
- #    acct_num = gets.chomp.to_i
- #    if 
- #   account_holders.includes? acct_num
-  #   	puts "Please enter your PIN"
-  #   		acct_pin = gets.chomp.to_i
-  #   	else
-  #   		puts "Not a valid account number"
-  #   	end
-alance = 400
-atm_balance = 1000
+]
+atm_balance = 7000
 withdraw_amount = 0
 
+# Login
+current_acct = ""
+while current_acct == ""
+  puts "Please enter your account number"
+    current_acct = gets.chomp
+end
+current_pin = ""
+while current_pin == ""
+  puts "Please enter your PIN"
+    current_pin = gets.chomp
+end
+
+current_user = ""
+  acct_holders.each do |user|
+    if user[:acct] == current_acct && user[:pin] == current_pin 
+    current_user = user
+    puts "Welcome, #{current_user[:name]}."
+    
 # ATM Options Menu
-questions = [ "1 - Check Balance", "2 - Withdraw Money", "3 - Cancel" ]
-  def valid_question_input(user_question_input)
-  	(1..question.count).includes?(user_question_input)
-  end
-puts %{
-Please enter an option by its cooresponding number:
-  }
-questions.each { |q| puts q }
-  input = gets.chomp
-	is_valid? user_question_input(input)
-
-
-  if option == questions[2]
-    puts "Thanks. Please come again!"
-  elsif option == questions[0]
-    puts "Your balance is #{balance}."
-  elsif option == questions[1]
-    puts "How much would you like to withdraw?"
-    withdraw_amount = gets.chomp.to_i
-    if atm_balance < withdraw_amount
-      puts "Sorry. ATM Out of Order"
-    elsif withdraw_amount > balance
-        puts "You do not have enough funds."
-    else
-      balance -= withdraw_amount
-      puts %{
-        Here is your #{withdraw_amount}. 
-        Your balance is now #{balance}.
-        Thankd you.
+    if current_user
+        puts %{
+      Please enter an option by its cooresponding number:
+      1 - Check Balance
+      2 - Withdraw Money
+      3 - Cancel
       }
+        choice = gets.to_i
+    # ATM Actions
+      if choice == 3
+        puts "Thanks. Please come again!"
+      elsif choice == 1
+        puts "Your balance is #{current_user[:funds]}."
+      elsif choice == 2
+        puts "How much would you like to withdraw?"
+        withdraw_amount = gets.chomp.to_i
+        if atm_balance < withdraw_amount
+          puts "Sorry. ATM Out of Order"
+        elsif withdraw_amount > current_user[:funds]
+            puts "You do not have enough funds."
+        else
+          current_user[:funds] -= withdraw_amount
+          puts %{
+            Here is your #{withdraw_amount}. 
+            Your balance is now #{current_user[:funds]}.
+            Thank you.
+          }
+        end
       end
+    end
+  else 
+    puts "This information is incorrect."
   end
-
+end
