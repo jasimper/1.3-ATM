@@ -1,19 +1,19 @@
 acct_holders = [
   {
-	name: "Al",
+  name: "Al Anderson",
 	acct: "1234",
 	pin: "1234",
 	funds: 50
 	},
   {
-	name: "Bob",
-	acct: "5678567856785678",
+	name: "Bob Barker",
+	acct: "5678",
 	pin: "5678",
 	funds: 8000
 	},
   {
-	name: "Carl",
-	acct: "9090909090909090",
+	name: "Carl Carson",
+	acct: "9090",
 	pin: "9090",
 	funds: 1200
 	}
@@ -40,36 +40,37 @@ current_user = ""
     puts "Welcome, #{current_user[:name]}."
     
 # ATM Options Menu
-    if current_user
+  if current_user
+
+    option_menu = ["1. Check Balance", "2. Withdraw funds", "3. Cancel"]
+    choice = nil
+    until (1..option_menu.length).include?(choice)
+      choice = puts "Please enter an option by its cooresponding number:\n#{option_menu.join(" | ")}"
+      choice = gets.to_i
+    end
+
+  # ATM Actions
+    if choice == 3
+      puts "Thanks. Please come again!"
+    elsif choice == 1
+      puts "Your balance is #{current_user[:funds]}."
+    elsif choice == 2
+      puts "How much would you like to withdraw?"
+      withdraw_amount = gets.chomp.to_i
+      if atm_balance < withdraw_amount
+        puts "Sorry. ATM Out of Order"
+      elsif withdraw_amount > current_user[:funds]
+        puts "You do not have enough funds."
+      else current_user[:funds] -= withdraw_amount
         puts %{
-      Please enter an option by its cooresponding number:
-      1 - Check Balance
-      2 - Withdraw Money
-      3 - Cancel
-      }
-        choice = gets.to_i
-    # ATM Actions
-      if choice == 3
-        puts "Thanks. Please come again!"
-      elsif choice == 1
-        puts "Your balance is #{current_user[:funds]}."
-      elsif choice == 2
-        puts "How much would you like to withdraw?"
-        withdraw_amount = gets.chomp.to_i
-        if atm_balance < withdraw_amount
-          puts "Sorry. ATM Out of Order"
-        elsif withdraw_amount > current_user[:funds]
-            puts "You do not have enough funds."
-        else
-          current_user[:funds] -= withdraw_amount
-          puts %{
-            Here is your #{withdraw_amount}. 
-            Your balance is now #{current_user[:funds]}.
-            Thank you.
-          }
-        end
+          Here is your #{withdraw_amount}. 
+          Your balance is now #{current_user[:funds]}.
+          Thank you.
+        }
       end
     end
+  end
+  # This message is behaving funky. I don't know how to fix it.
   else 
     puts "This information is incorrect."
   end
